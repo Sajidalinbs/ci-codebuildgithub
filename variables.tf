@@ -10,16 +10,16 @@ variable "github_organization" {
   default     = "Sajidalinbs"
 }
 
-variable "github_token" {
+variable "app_secret_token" {
   description = "GitHub Personal Access Token for CodeBuild authentication. Must have 'repo' and 'admin:repo_hook' scopes."
   type        = string
   sensitive   = true
   validation {
-    condition     = length(var.github_token) > 0
+    condition     = length(var.app_secret_token) > 0
     error_message = "GitHub token is required for webhook creation."
   }
   validation {
-    condition     = can(regex("^ghp_[a-zA-Z0-9]{36}$", var.github_token))
+    condition     = can(regex("^ghp_[a-zA-Z0-9]{36}$", var.app_secret_token))
     error_message = "GitHub token must be a valid Personal Access Token starting with 'ghp_' and 40 characters long."
   }
 }
@@ -86,6 +86,16 @@ variable "log_retention_days" {
   validation {
     condition     = var.log_retention_days >= 1 && var.log_retention_days <= 3653
     error_message = "Log retention must be between 1 and 3653 days."
+  }
+}
+
+variable "build_notification_emails" {
+  description = "List of email addresses to receive build notifications"
+  type        = list(string)
+  default     = []
+  validation {
+    condition     = alltrue([for email in var.build_notification_emails : can(regex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", email))])
+    error_message = "All email addresses must be valid email format."
   }
 }
 

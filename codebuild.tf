@@ -1,6 +1,6 @@
 # GitHub Token stored in AWS Secrets Manager
 resource "aws_secretsmanager_secret" "github_token" {
-  name        = "${local.aws_project_name}-${var.environment}-github-pat"
+  name        = "${local.aws_project_name}-${var.environment}-github-pat-${random_id.secret_suffix.hex}"
   description = "GitHub Personal Access Token for CodeBuild authentication"
   
   tags = merge(local.common_tags, {
@@ -8,9 +8,14 @@ resource "aws_secretsmanager_secret" "github_token" {
   })
 }
 
+# Random suffix for secret name to avoid conflicts during recreation
+resource "random_id" "secret_suffix" {
+  byte_length = 4
+}
+
 resource "aws_secretsmanager_secret_version" "github_token" {
   secret_id     = aws_secretsmanager_secret.github_token.id
-  secret_string = var.github_token
+  secret_string = var.app_secret_token
   
   depends_on = [aws_secretsmanager_secret.github_token]
 }

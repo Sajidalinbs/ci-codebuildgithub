@@ -1,0 +1,28 @@
+# Pulse Backend - Terraform Variables
+# This file contains configuration for the Pulse Backend application
+
+# GitHub Configuration
+app_secret_token = "YOUR_GITHUB_PERSONAL_ACCESS_TOKEN_HERE"
+github_organization = "sajidrai"
+project_name = "pulse-backend"
+
+# Project Configuration
+environment = "dev"
+
+# AWS Configuration
+aws_region = "us-east-1"
+vpc_id = "vpc-0f9667295b55dc69f"
+subnet_ids = ["subnet-08bc4ce6a72c5171c", "subnet-01658883360cdf4c7"]
+
+# CodeBuild Configuration
+codebuild_compute_type = "BUILD_GENERAL1_LARGE"
+log_retention_days = 30
+
+# Build Notifications
+build_notification_emails = [
+  "devops@yourcompany.com",
+  "backend-team@yourcompany.com"
+]
+
+# Resource Tags
+owner = "devops-team"

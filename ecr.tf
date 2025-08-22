@@ -1,5 +1,5 @@
-# ECR Repository for React app
-resource "aws_ecr_repository" "react_app" {
+# ECR Repository for application
+resource "aws_ecr_repository" "app" {
   name                 = local.aws_project_name
   image_tag_mutability = "MUTABLE"
 
@@ -13,15 +13,15 @@ resource "aws_ecr_repository" "react_app" {
 
   tags = merge(local.common_tags, {
     Name        = "${local.resource_prefix}-${var.project_name}"
-    Stack       = "react"
+    Stack       = "application"
     Repository  = var.project_name
-    Description = "React Application"
+    Description = "Application"
   })
 }
 
 # ECR Lifecycle Policy
-resource "aws_ecr_lifecycle_policy" "react_app_lifecycle" {
-  repository = aws_ecr_repository.react_app.name
+resource "aws_ecr_lifecycle_policy" "app_lifecycle" {
+  repository = aws_ecr_repository.app.name
 
   policy = jsonencode({
     rules = [
